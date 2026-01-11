@@ -146,15 +146,22 @@ void Omega::gfpop(Data const& data)
 //##### LP_edges_operators #####//////##### LP_edges_operators #####//////##### LP_edges_operators #####///
 
 void Omega::LP_edges_operators(unsigned int t)
-{
-  for(unsigned int i = 0 ; i < q ; i++) /// loop for all q edges
+  void Omega::LP_edges_operators(unsigned int t)
   {
-    // COMMENT: i-th edge = m_graph.getEdge(i)
-    // COMMENT: starting state = m_graph.getEdge(i).getState1()
-    // COMMENT: t is the label to associate to the constraint
-    LP_edges[i].LP_edges_constraint(LP_ts[t][m_graph.getEdge(i).getState1()], m_graph.getEdge(i), t);
+    for(unsigned int i = 0 ; i < q ; i++)
+    {
+      const Edge& e = m_graph.getEdge(i);
+      
+      if(e.isActive(t))
+      {
+        LP_edges[i].LP_edges_constraint(
+            LP_ts[t][e.getState1()],
+                    e,
+                    t
+        );
+      }
+    }
   }
-}
 
 //##### LP_edges_addPointAndPenalty #####//////##### LP_edges_addPointAndPenalty #####//////##### LP_edges_addPointAndPenalty #####///
 //##### LP_edges_addPointAndPenalty #####//////##### LP_edges_addPointAndPenalty #####//////##### LP_edges_addPointAndPenalty #####///
